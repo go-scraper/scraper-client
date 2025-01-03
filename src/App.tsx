@@ -41,7 +41,17 @@ const App: React.FC = () => {
       setLoadedPages(1); // Reset loaded pages on new URL fetch
       setTotalInaccessibleUrls(response.data.scraped.paginated.inaccessible_urls || 0);
     } catch (err) {
-      setError(`Error fetching data: [${err}]`);
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status; // HTTP status code
+        const errorData = err.response?.data; // Response body
+        setError(
+          `Error: ${errorData ? errorData?.error : err.message}`
+        );
+      } else if (err instanceof Error) {
+        setError(`An unexpected error occurred: ${err.message}`);
+      } else {
+        setError(`An unexpected error occurred.`);
+      }
     } finally {
       setLoading(false);
     }
@@ -98,7 +108,7 @@ const App: React.FC = () => {
           variant="outlined"
           fullWidth
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => setUrl(e.target.value.trim())}
         />
         <Button type="submit" variant="contained" color="primary" style={{ marginTop: 10 }}>
           Scrape
@@ -229,7 +239,7 @@ const App: React.FC = () => {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {scrapeData.scraped.paginated.urls.map((urlItem: UrlItem, index: number) => (
+                {(scrapeData.scraped.paginated.urls || []).map((urlItem: UrlItem, index: number) => (
                     <TableRow
                     key={index}
                     style={{
@@ -260,14 +270,14 @@ const App: React.FC = () => {
                         </a>
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell style={{maxWidth:100}}>
                         {urlItem.http_status >= 200 && urlItem.http_status < 300 ? (
                         <Chip label={`Success (${urlItem.http_status})`} color="success" icon={<CheckCircleIcon />} />
                         ) : (
                         <Chip label={`Error (${urlItem.http_status})`} color="error" icon={<CancelIcon />} />
                         )}
                     </TableCell>
-                    <TableCell>{urlItem.error || 'None'}</TableCell>
+                    <TableCell style={{maxWidth:300, wordWrap: 'break-word', whiteSpace: 'normal'}}>{urlItem.error ? <Alert severity="error">{urlItem.error}</Alert> : 'None'}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>
