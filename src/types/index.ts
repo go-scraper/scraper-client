@@ -6,7 +6,7 @@ export interface UrlItem {
   
   export interface PaginatedUrls {
     urls: UrlItem[];
-    next_page: string | null;
+    inaccessible_urls: number;
   }
   
   export interface ScrapeResponse {
