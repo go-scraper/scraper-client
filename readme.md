@@ -1,5 +1,24 @@
 # Scraper client
 
+This is the client application to connect with the scraper-api.
+
+## Pre-requisites
+
+* Docker
+* [Scraper-api](https://github.com/go-scraper/scraper-api)
+
+## Configurations
+
+You can change following configurations on the `.env` file.
+
+```bash
+# Application port
+PORT=3055
+
+# Scaper API base URL
+REACT_APP_SCRAPER_API_BASE_URL=http://localhost:8080
+```
+
 ## How to run using Docker
 
 * Run `docker-compose up --build`
