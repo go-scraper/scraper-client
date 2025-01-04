@@ -13,7 +13,7 @@ You can change following configurations on the `.env` file.
 
 ```bash
 # Application port
-PORT=3055
+PORT=3000
 
 # Scaper API base URL
 REACT_APP_SCRAPER_API_BASE_URL=http://localhost:8080
