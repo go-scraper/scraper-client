@@ -199,7 +199,7 @@ const App: React.FC = () => {
             </Typography>
             <Typography marginTop={2}>
               <Chip
-                label={`${Math.min(loadedPages * 10, scrapeData.scraped.total_urls)}`}
+                label={`${Math.min(loadedPages * scrapeData.pagination.page_size, scrapeData.scraped.total_urls)}`}
                 color="warning"
               /> of&nbsp;
               <Chip
@@ -224,7 +224,10 @@ const App: React.FC = () => {
                 fullWidth
                 style={{ margin: '20px 0' }}
             >
-                Access next {Math.min(10, (scrapeData.scraped.total_urls - Math.min(loadedPages * 10, scrapeData.scraped.total_urls)))} of remaining {`${scrapeData.scraped.total_urls - Math.min(loadedPages * 10, scrapeData.scraped.total_urls)}`} URL(s)
+                Access next {Math.min(scrapeData.pagination.page_size, (scrapeData.scraped.total_urls - 
+                  Math.min(loadedPages * scrapeData.pagination.page_size, scrapeData.scraped.total_urls)))}
+                  &nbsp;of remaining {`${scrapeData.scraped.total_urls - Math.min(loadedPages * 
+                  scrapeData.pagination.page_size, scrapeData.scraped.total_urls)}`} URL(s)
             </Button>
             )}
           {fetchingNextPage && <LinearProgress style={{marginTop:25}}/>}
