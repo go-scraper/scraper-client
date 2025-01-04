@@ -60,7 +60,7 @@ const App: React.FC = () => {
   const handleSubmitUrl = (e: React.FormEvent) => {
     e.preventDefault();
     if (url) {
-      fetchScrapeData(`http://localhost:8080/scrape?url=${url}`);
+      fetchScrapeData(`${process.env.REACT_APP_SCRAPER_API_BASE_URL}/scrape?url=${url}`);
     }
   };
 
@@ -68,7 +68,7 @@ const App: React.FC = () => {
     if (scrapeData?.pagination.next_page) {
       setFetchingNextPage(true);
       try {
-        const response = await axios.get(`http://localhost:8080${scrapeData.pagination.next_page}`);
+        const response = await axios.get(`${process.env.REACT_APP_SCRAPER_API_BASE_URL}${scrapeData.pagination.next_page}`);
         setScrapeData((prevData) => {
           if (prevData) {
             return {
