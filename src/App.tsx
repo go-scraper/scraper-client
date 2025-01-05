@@ -42,10 +42,10 @@ const App: React.FC = () => {
       setTotalInaccessibleUrls(response.data.scraped.paginated.inaccessible_urls || 0);
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        const status = err.response?.status; // HTTP status code
+        const status = err.response?.status ? err.response?.status : 503; // HTTP status code
         const errorData = err.response?.data; // Response body
         setError(
-          `Error: ${errorData ? errorData?.error : err.message}`
+          `Error [${status}]: ${errorData ? errorData?.error : err.message}`
         );
       } else if (err instanceof Error) {
         setError(`An unexpected error occurred: ${err.message}`);
